@@ -31,7 +31,16 @@ class Logger {
   private _formatMessage(logLevelName: string, ...args: unknown[]): string {
     const date = new Date();
     const formattedDate = date.toLocaleTimeString(this.locale);
-    return `[\u001b[30m${formattedDate}\u001b[0m] ${logLevelName} ${args}`;
+    for (const arg of args) {
+      if (typeof arg === 'object') {
+        try {
+          args[args.indexOf(arg)] = JSON.stringify(arg);
+        } catch (e) {
+          // Ignore JSON.stringify errors
+        }
+      }
+    }
+    return `[\u001b[30m${formattedDate}\u001b[0m] ${logLevelName} ${args.join(' ')}`;
   }
 
   private _log(
@@ -44,8 +53,52 @@ class Logger {
     console.log(this._formatMessage(logLevelName, ...args));
   }
 
+  public trace(...args: unknown[]) {
+    return this._log(
+      LogLevel.trace,
+      '\u001b[37m\u001b[1mTRACE\u001b[0m',
+      ...args,
+    );
+  }
+
+  public debug(...args: unknown[]) {
+    return this._log(
+      LogLevel.debug,
+      '\u001b[36m\u001b[1mDEBUG\u001b[0m',
+      ...args,
+    );
+  }
+
   public info(...args: unknown[]) {
-    return this._log(LogLevel.info, '\u001b[34m\u001b[1mINFO\u001b[0m', ...args);
+    return this._log(
+      LogLevel.info,
+      '\u001b[34m\u001b[1mINFO\u001b[0m',
+      ...args,
+    );
+  }
+
+  public warn(...args: unknown[]) {
+    return this._log(
+      LogLevel.warn,
+      '\u001b[33m\u001b[1mWARN\u001b[0m',
+      ...args,
+    );
+  }
+
+  public error(...args: unknown[]) {
+    return this._log(
+      LogLevel.error,
+      '\u001b[35m\u001b[1mERROR\u001b[0m',
+      ...args,
+    );
+  }
+
+  public fatal(...args: unknown[]) {
+    return this._log(
+      LogLevel.fatal,
+      '\u001b[31m\u001b[1mFATAL\u001b[0m',
+      ...args,
+    );
   }
 }
 

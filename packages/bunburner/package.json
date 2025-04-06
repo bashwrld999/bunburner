@@ -11,6 +11,7 @@
     "citty": "^0.1.6",
     "console-gui-tools": "^3.7.0",
     "emittery": "^1.1.0",
+    "esbuild": "^0.25.2",
     "micromatch": "^4.0.8",
     "unconfig": "^7.3.1",
     "ws": "^8.18.1"

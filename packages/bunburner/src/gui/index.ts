@@ -23,7 +23,7 @@ export class GuiManager {
 			boxStyle: "bold",
 			fitHeight: true,
 		},
-		logPageSize: process.stdout.rows - 2,
+		//logPageSize: process.stdout.rows - 2,
 	};
 	public gui = new ConsoleManager(this.options);
 

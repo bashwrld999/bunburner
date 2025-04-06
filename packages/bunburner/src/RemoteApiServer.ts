@@ -11,6 +11,7 @@ import {
   type HmrData,
   type ResolvedBunBurnerConfig,
 } from './types';
+import test from 'node:test';
 
 export class RemoteApiServer extends Emittery {
   private _server: Bun.Server;
@@ -64,7 +65,7 @@ export class RemoteApiServer extends Emittery {
 
   private _initEvents(config: ResolvedBunBurnerConfig) {
     this.on(Events.open, async (ws) => {
-      console.log('connect');
+      Logger.info('Client connected');
     });
 
     this.on(Events.open, async (ws) => {
@@ -74,7 +75,7 @@ export class RemoteApiServer extends Emittery {
       }
       const data = await this.getDefinitionFile();
       await fs.writeFile(filename as string, data.result);
-      console.info('dts change', filename);
+      Logger.info('DTS got updated', filename);
       this.handleHmrMessage();
     });
   }
@@ -141,24 +142,24 @@ export class RemoteApiServer extends Emittery {
 
   async fetchModule(data: HmrData): Promise<string> {
     let content = '';
-    // if (data.transform) {
-    //   this.server.invalidateFile(data.file);
-    //   const module = await this.server.fetchModule(data.file);
-    //   if (!module) {
-    //     throw new Error('module not found: ' + data.file);
-    //   }
-    //   content = module.code;
-    //   if (this.server.config.viteburner.sourcemap === 'inline' && module.map) {
-    //     content += getSourceMapString(module.map);
-    //   }
-    // } else {
-    //   const buffer = await fs.promises.readFile(
-    //     path.resolve(this.server.config.root, data.file),
-    //   );
-    //   content = buffer.toString();
-    // }
-    const buffer = await fs.readFile(path.resolve(process.cwd(), data.file));
-    content = buffer.toString();
+    if (data.transform) {
+      this.server.invalidateFile(data.file);
+      const module = await this.server.fetchModule(data.file);
+      if (!module) {
+        throw new Error('module not found: ' + data.file);
+      }
+      content = module.code;
+      if (this.server.config.viteburner.sourcemap === 'inline' && module.map) {
+        content += getSourceMapString(module.map);
+      }
+    } else {
+      const buffer = await fs.readFile(
+        path.resolve(process.cwd(), data.file),
+      );
+      content = buffer.toString();
+    }
+    // const buffer = await fs.readFile(path.resolve(process.cwd(), data.file));
+    // content = buffer.toString();
     return content;
   }
 
