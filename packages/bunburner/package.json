@@ -1,0 +1,25 @@
+{
+  "name": "bunburner",
+  "type": "module",
+  "private": true,
+  "main": "src/index.ts",
+  "bin": {
+    "bunburner": "src/cli/index.ts"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "citty": "^0.1.6",
+    "console-gui-tools": "^3.7.0",
+    "emittery": "^1.1.0",
+    "micromatch": "^4.0.8",
+    "unconfig": "^7.3.1",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/micromatch": "^4.0.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

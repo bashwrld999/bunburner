@@ -1,0 +1,15 @@
+{
+  "name": "bunburner-template",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bunburner": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "bunburner dev"
+  },
+  "type": "module"
+}
