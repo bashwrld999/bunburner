@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import test from 'node:test';
 import Emittery from 'emittery';
 import WebSocket from 'ws';
 import { WebSocketServer } from 'ws';
@@ -11,7 +12,6 @@ import {
   type HmrData,
   type ResolvedBunBurnerConfig,
 } from './types';
-import test from 'node:test';
 
 export class RemoteApiServer extends Emittery {
   private _server: Bun.Server;
@@ -196,10 +196,10 @@ export class RemoteApiServer extends Emittery {
           //   server: serverName,
           // });
         }
-        console.info(`hmr ${data.event}`, filename, '(done)');
+        Logger.info(`hmr ${data.event}`, filename, '(done)');
       } catch (e) {
-        console.error(`error ${data.event}: ${filename} ${e.error}`);
-        console.error(`hmr ${data.event} ${data.file} (error)`);
+        Logger.error(`error ${data.event}: ${filename} ${e.error}`);
+        Logger.error(`hmr ${data.event} ${data.file} (error)`);
       }
     }
   }
